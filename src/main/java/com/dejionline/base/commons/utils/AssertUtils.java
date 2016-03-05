@@ -75,4 +75,10 @@ public class AssertUtils {
                     , ResponseCodeEnums.OTHER_SERVICE_ERROR.getMessage());
         }
     }
+
+    public static void isSuccess(BaseResponse response, ResponseCodeEnums enums) {
+        if (ResponseCodeEnums.SUCCESS.getCode() != response.getCode()) {
+            throw new ServiceException(enums);
+        }
+    }
 }

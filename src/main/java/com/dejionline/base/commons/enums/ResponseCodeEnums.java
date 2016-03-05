@@ -7,6 +7,7 @@ package com.dejionline.base.commons.enums;
  */
 public enum ResponseCodeEnums {
 
+    //调用成功
     SUCCESS(-1, "接口调用成功"),
 
     RUNTIME_ERROR(-2, "程序运行时异常"),
@@ -17,16 +18,36 @@ public enum ResponseCodeEnums {
 
     PARAMS_EMPTY(-8, "参数为空"),
 
-    DATABASE_ERROR(-22, "操作数据库失败"),
+    //插入数据库失败
+    DATABASE_ERROR(-22, "插入数据库失败，创建订单失败"),
 
-    CACHE_ERROR(-23, "操作缓存失败"),
+    //操作购物车缓存失败
+    CACHE_ERROR(-23, "更新购物车缓存失败"),
 
+    //调用其它服务异常
     OTHER_SERVICE_ERROR(-202, "调用其它服务接口异常"),
 
+    ORDER_QUERY_NO_DATA(-205, "订单查询无数据"),
+
+    //没有权限
     NO_PERMISSION(99, "没有权限"),
 
+    //创建订单时，有商品无法购买
+    EXISTS_CAN_NOT_BUY_ITEMS(200, "存在无法购买的商品，无法创建订单"),
+
+    //创建订单时，订单信息有误
+    ORDER_INFO_NOT_MATCH(201, "订单信息有误，无法创建订单"),
+
+    //购买商品超过限购数量
+    OVER_ITEM_LIMIT_QUANTITY(202, "超过商品限购数量"),
+
     //锁未释放
-    LOCK_HAS_BEEN_ACQUIRED(203, "分布式锁未释放");
+    LOCK_HAS_BEEN_ACQUIRED(203, "分布式锁未释放"),
+
+    //该订单状态无法进行此操作
+    ORDER_STATUS_ERROR(204, "该订单状态无法进行此操作"),
+
+    REQUEST_PAY_ERROR(205, "创建订单成功,请求支付失败");
 
     // 接口返回编码
     private int code;
