@@ -47,7 +47,13 @@ public enum ResponseCodeEnums {
     //该订单状态无法进行此操作
     ORDER_STATUS_ERROR(204, "该订单状态无法进行此操作"),
 
-    REQUEST_PAY_ERROR(205, "创建订单成功,请求支付失败");
+    REQUEST_PAY_ERROR(205, "创建订单成功,请求支付失败"),
+
+    //支付流水不存在
+    PAY_INFO_NOT_FOUND_BY_PAY_SERIAL(-300, "根据支付流水无法查询到订单"),
+
+    //支付信息与支付方返回信息不一致
+    PAY_INFO_NOT_MATCH(-301, "支付信息与支付方返回信息不一致");
 
     // 接口返回编码
     private int code;
