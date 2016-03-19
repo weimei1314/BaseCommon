@@ -49,6 +49,8 @@ public enum ResponseCodeEnums {
 
     REQUEST_PAY_ERROR(205, "创建订单成功,请求支付失败"),
 
+    LOCK_TIME_OUT_AND_AUTO_RELEASE(206, "分布式锁内业务执行超时，自动释放"),
+
     //支付流水不存在
     PAY_INFO_NOT_FOUND_BY_PAY_SERIAL(-300, "根据支付流水无法查询到订单"),
 
