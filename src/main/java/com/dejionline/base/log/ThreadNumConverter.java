@@ -17,6 +17,6 @@ public class ThreadNumConverter extends ClassicConverter {
     @Override
     public String convert(ILoggingEvent event) {
 
-        return DigestUtils.md5Hex("" + Thread.currentThread().getId());
+        return DigestUtils.md5Hex(Thread.currentThread().getName());
     }
 }
