@@ -6,8 +6,11 @@ import com.dejionline.base.commons.utils.GsonUtils;
 import com.dejionline.base.exception.ServiceException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.UUID;
 
 /**
  * functional description
@@ -24,6 +27,8 @@ public class ControllerInterceptor implements MethodInterceptor {
         long startTime = System.currentTimeMillis();
 
         Object result;
+
+        Thread.currentThread().setName(DigestUtils.md5Hex(UUID.randomUUID().toString()));
 
         String methodName = invocation.getThis().getClass().getSimpleName() + "." + invocation.getMethod().getName();
 
