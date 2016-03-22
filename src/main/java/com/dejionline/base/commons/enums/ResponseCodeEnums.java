@@ -19,7 +19,7 @@ public enum ResponseCodeEnums {
     PARAMS_EMPTY(-8, "参数为空"),
 
     //插入数据库失败
-    DATABASE_ERROR(-22, "插入数据库失败，创建订单失败"),
+    DATABASE_ERROR(-22, "数据库操作失败"),
 
     //操作购物车缓存失败
     CACHE_ERROR(-23, "更新购物车缓存失败"),
