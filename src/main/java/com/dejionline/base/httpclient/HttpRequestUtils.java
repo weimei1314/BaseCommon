@@ -1,6 +1,7 @@
 package com.dejionline.base.httpclient;
 
 import com.dejionline.base.commons.constants.HttpRequestConstants;
+import com.dejionline.base.commons.enums.ResponseCodeEnums;
 import com.dejionline.base.commons.utils.GsonUtils;
 import com.dejionline.base.exception.ServiceException;
 import com.google.common.cache.CacheBuilder;
@@ -209,7 +210,9 @@ public class HttpRequestUtils {
 
             } catch (URISyntaxException e) {
 
-                throw new ServiceException(e.getMessage());
+                LOGGER.error("get dns host error", e);
+
+                throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
             }
 
             request.setHeader("host", uri.getHost());
@@ -271,11 +274,11 @@ public class HttpRequestUtils {
 
         } catch (SocketTimeoutException | ConnectTimeoutException e) {
 
-            throw new ServiceException("http client request timeout");
+            throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_TIMEOUT);
 
         } catch (IOException e) {
 
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
 
         } finally {
 

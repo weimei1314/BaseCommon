@@ -27,6 +27,9 @@ public enum ResponseCodeEnums {
     //调用其它服务异常
     OTHER_SERVICE_ERROR(-202, "调用其它服务接口异常"),
 
+    //调用其它服务超时
+    OTHER_SERVICE_TIMEOUT(-203, "调用其它服务接口超时"),
+
     ORDER_QUERY_NO_DATA(-205, "订单查询无数据"),
 
     //没有权限
