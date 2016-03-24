@@ -270,7 +270,7 @@ public class HttpRequestUtils {
                 return EntityUtils.toString(response.getEntity());
             }
 
-            throw new ServiceException("content type is text/html:" + EntityUtils.toString(response.getEntity()));
+            throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR.getCode(), EntityUtils.toString(response.getEntity()));
 
         } catch (SocketTimeoutException | ConnectTimeoutException e) {
 
