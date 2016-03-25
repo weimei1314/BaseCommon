@@ -58,7 +58,9 @@ public enum ResponseCodeEnums {
     PAY_INFO_NOT_FOUND_BY_PAY_SERIAL(-300, "根据支付流水无法查询到订单"),
 
     //支付信息与支付方返回信息不一致
-    PAY_INFO_NOT_MATCH(-301, "支付信息与支付方返回信息不一致");
+    PAY_INFO_NOT_MATCH(-301, "支付信息与支付方返回信息不一致"),
+
+    RSA_SIGN_ERROR(-302, "RSA加密错误");
 
     // 接口返回编码
     private int code;
