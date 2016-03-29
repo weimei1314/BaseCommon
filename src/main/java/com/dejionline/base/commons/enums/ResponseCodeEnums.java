@@ -60,7 +60,9 @@ public enum ResponseCodeEnums {
     //支付信息与支付方返回信息不一致
     PAY_INFO_NOT_MATCH(-301, "支付信息与支付方返回信息不一致"),
 
-    RSA_SIGN_ERROR(-302, "RSA加密错误");
+    RSA_SIGN_ERROR(-302, "RSA加密错误"),
+
+    ILLEGAL_ALIPAY_CALLBACK_PARAM(-303, "支付宝异步通知参数错误");
 
     // 接口返回编码
     private int code;
