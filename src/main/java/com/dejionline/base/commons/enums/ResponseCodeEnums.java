@@ -62,7 +62,11 @@ public enum ResponseCodeEnums {
 
     RSA_SIGN_ERROR(-302, "RSA加密错误"),
 
-    ILLEGAL_ALIPAY_CALLBACK_PARAM(-303, "支付宝异步通知参数错误");
+    ILLEGAL_ALIPAY_CALLBACK_PARAM(-303, "支付宝异步通知参数错误"),
+
+    ALIPAY_CALLBACK_RESPONSE_TXT_FALSE(-304, "支付宝异步通知responseTxt错误"),
+
+    ALIPAY_CALLBACK_SIGN_ERROR(-305, "支付宝异步通知签名错误");
 
     // 接口返回编码
     private int code;
