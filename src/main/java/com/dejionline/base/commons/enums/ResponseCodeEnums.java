@@ -22,7 +22,7 @@ public enum ResponseCodeEnums {
     DATABASE_ERROR(-22, "数据库操作失败"),
 
     //操作购物车缓存失败
-    CACHE_ERROR(-23, "更新购物车缓存失败"),
+    CACHE_ERROR(-23, "更新缓存失败"),
 
     //调用其它服务异常
     OTHER_SERVICE_ERROR(-202, "调用其它服务接口异常"),
