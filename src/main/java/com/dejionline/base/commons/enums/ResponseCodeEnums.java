@@ -66,7 +66,9 @@ public enum ResponseCodeEnums {
 
     ALIPAY_CALLBACK_RESPONSE_TXT_FALSE(-304, "支付宝异步通知responseTxt错误"),
 
-    ALIPAY_CALLBACK_SIGN_ERROR(-305, "支付宝异步通知签名错误");
+    ALIPAY_CALLBACK_SIGN_ERROR(-305, "支付宝异步通知签名错误"),
+
+    VERIFY_SIGN_ERROR(-306, "验签错误");
 
     // 接口返回编码
     private int code;
