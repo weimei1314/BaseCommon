@@ -7,7 +7,7 @@ package com.dejionline.base.commons.constants;
  */
 public class HttpRequestConstants {
 
-    public static final String DNS_SERVICE_URL_INDEX = "http://120.27.185.245/d?dn=";
+    public static final String DNS_SERVICE_URL_INDEX = "http://dns.dejionline.com/d?dn=";
 
     public static final int DNS_SERVICE_TIMEOUT = 2000;
 
