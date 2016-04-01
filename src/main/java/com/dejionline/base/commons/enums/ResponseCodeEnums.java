@@ -68,7 +68,9 @@ public enum ResponseCodeEnums {
 
     ALIPAY_CALLBACK_SIGN_ERROR(-305, "支付宝异步通知签名错误"),
 
-    VERIFY_SIGN_ERROR(-306, "验签错误");
+    VERIFY_SIGN_ERROR(-306, "验签错误"),
+
+    GET_UNIONPAY_TN_ERROR(-307, "获取银联TN号失败");
 
     // 接口返回编码
     private int code;
