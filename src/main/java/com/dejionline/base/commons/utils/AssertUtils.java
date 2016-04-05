@@ -7,6 +7,7 @@ import com.dejionline.base.model.response.BaseResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 /**
@@ -62,6 +63,14 @@ public class AssertUtils {
     public static void isEquals(double d1, double d2, ResponseCodeEnums enums) {
 
         if (Math.abs(d1 - d2) >= 0.01) {
+
+            throw new ServiceException(enums);
+        }
+    }
+
+    public static void isEquals(BigDecimal d1, BigDecimal d2, ResponseCodeEnums enums) {
+
+        if (d1.subtract(d2).abs().compareTo(new BigDecimal(0.001)) != -1) {
 
             throw new ServiceException(enums);
         }
