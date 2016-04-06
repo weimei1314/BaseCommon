@@ -271,7 +271,7 @@ public class HttpRequestUtils {
 
             String responseStr = EntityUtils.toString(response.getEntity());
 
-            LOGGER.info("requestUrl:{}|cost:{}|response:{}", request.getURI().getHost()
+            LOGGER.info("requestUrl:{}|cost:{}|response:{}", request.getURI().getPath()
                     , System.currentTimeMillis() - start, responseStr);
 
             if (response.getEntity().getContentType().getValue().contains("text/html")) {
