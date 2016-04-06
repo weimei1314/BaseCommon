@@ -265,14 +265,21 @@ public class HttpRequestUtils {
 
         try {
 
+            long start = System.currentTimeMillis();
+
             response = getHttpClient().execute(request);
 
-            if (!response.getEntity().getContentType().getValue().contains("text/html")) {
+            String responseStr = EntityUtils.toString(response.getEntity());
 
-                return EntityUtils.toString(response.getEntity());
+            LOGGER.info("requestUrl:{}|cost:{}|response:{}", request.getURI().getHost()
+                    , System.currentTimeMillis() - start, responseStr);
+
+            if (response.getEntity().getContentType().getValue().contains("text/html")) {
+
+                throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
             }
 
-            throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR.getCode(), EntityUtils.toString(response.getEntity()));
+            return responseStr;
 
         } catch (ConnectionPoolTimeoutException e) {
 
