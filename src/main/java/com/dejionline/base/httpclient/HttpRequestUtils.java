@@ -218,8 +218,8 @@ public class HttpRequestUtils {
             request.setHeader("host", uri.getHost());
         }
 
-        request.setConfig(RequestConfig.custom().setConnectTimeout(timeout)
-                .setSocketTimeout(timeout).build());
+        request.setConfig(RequestConfig.custom().setConnectionRequestTimeout(timeout)
+                .setConnectTimeout(timeout).setSocketTimeout(timeout).build());
 
         return GsonUtils.fromJson(executeHttp(request), resObjType);
     }
