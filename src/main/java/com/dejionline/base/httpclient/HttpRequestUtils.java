@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -272,6 +273,10 @@ public class HttpRequestUtils {
             }
 
             throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR.getCode(), EntityUtils.toString(response.getEntity()));
+
+        } catch (ConnectionPoolTimeoutException e) {
+
+            throw new ServiceException(ResponseCodeEnums.GET_HTTPCLIENT_POOL_TIMEOUT);
 
         } catch (SocketTimeoutException | ConnectTimeoutException e) {
 
