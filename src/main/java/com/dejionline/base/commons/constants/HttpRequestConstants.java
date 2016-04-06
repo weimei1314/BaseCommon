@@ -13,7 +13,7 @@ public class HttpRequestConstants {
 
     public static final int DNS_HOST_CACHE_EXPIRY_SECONDS = 30;
 
-    public static final int HTTP_CLIENT_CONNECTION_POOL_MAX = 20;
+    public static final int HTTP_CLIENT_CONNECTION_POOL_MAX = 500;
 
-    public static final int HTTP_CLIENT_CONNECTION_PER_ROUTE_MAX = 2;
+    public static final int HTTP_CLIENT_CONNECTION_PER_ROUTE_MAX = 300;
 }
