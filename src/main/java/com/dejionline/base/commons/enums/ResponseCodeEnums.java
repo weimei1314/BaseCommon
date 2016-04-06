@@ -30,6 +30,8 @@ public enum ResponseCodeEnums {
     //调用其它服务超时
     OTHER_SERVICE_TIMEOUT(-203, "调用其它服务接口超时"),
 
+    GET_HTTPCLIENT_POOL_TIMEOUT(-204, "httpclient从连接池获取连接超时"),
+
     ORDER_QUERY_NO_DATA(-205, "订单查询无数据"),
 
     //没有权限
