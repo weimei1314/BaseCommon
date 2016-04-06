@@ -267,11 +267,13 @@ public class HttpRequestUtils {
 
             long start = System.currentTimeMillis();
 
+            LOGGER.info("requestUrl:{}", request.getURI().getPath());
+
             response = getHttpClient().execute(request);
 
             String responseStr = EntityUtils.toString(response.getEntity());
 
-            LOGGER.info("requestUrl:{}|cost:{}|response:{}", request.getURI().getPath()
+            LOGGER.info("requestUrl:{}|cost:{}", request.getURI().getPath()
                     , System.currentTimeMillis() - start, responseStr);
 
             if (response.getEntity().getContentType().getValue().contains("text/html")) {

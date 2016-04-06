@@ -52,8 +52,7 @@ public class ControllerInterceptor implements MethodInterceptor {
                     .newInstance(ResponseCodeEnums.RUNTIME_ERROR);
         }
 
-        LOGGER.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime)
-                + "|result:" + GsonUtils.toJson(result));
+        LOGGER.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime));
 
         return result;
     }
