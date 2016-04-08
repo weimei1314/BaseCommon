@@ -219,8 +219,10 @@ public class HttpRequestUtils {
             request.setHeader("host", uri.getHost());
         }
 
-        request.setConfig(RequestConfig.custom().setConnectionRequestTimeout(timeout)
-                .setConnectTimeout(timeout).setSocketTimeout(timeout).build());
+        request.setConfig(RequestConfig.custom()
+                .setConnectionRequestTimeout(HttpRequestConstants.GET_CONNECT_TIME_OUT)
+                .setConnectTimeout(HttpRequestConstants.CONNECT_TIME_OUT)
+                .setSocketTimeout(timeout).build());
 
         return GsonUtils.fromJson(executeHttp(request), resObjType);
     }
@@ -235,7 +237,11 @@ public class HttpRequestUtils {
 
         HttpGet httpGet = new HttpGet(HttpRequestConstants.DNS_SERVICE_URL_INDEX + host);
 
-        httpGet.setConfig(RequestConfig.custom().setSocketTimeout(HttpRequestConstants.DNS_SERVICE_TIMEOUT).build());
+        httpGet.setConfig(RequestConfig.custom()
+                .setConnectionRequestTimeout(HttpRequestConstants.GET_CONNECT_TIME_OUT)
+                .setConnectTimeout(HttpRequestConstants.CONNECT_TIME_OUT)
+                .setSocketTimeout(HttpRequestConstants.DNS_SERVICE_TIMEOUT)
+                .build());
 
         List<String> hostList;
 

@@ -16,4 +16,8 @@ public class HttpRequestConstants {
     public static final int HTTP_CLIENT_CONNECTION_POOL_MAX = 1024;
 
     public static final int HTTP_CLIENT_CONNECTION_PER_ROUTE_MAX = 512;
+
+    public static final int GET_CONNECT_TIME_OUT = 1000;
+
+    public static final int CONNECT_TIME_OUT = 1000;
 }
