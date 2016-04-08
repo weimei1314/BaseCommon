@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 public class ControllerInterceptor implements MethodInterceptor {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(ControllerInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerInterceptor.class);
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
