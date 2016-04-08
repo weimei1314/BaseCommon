@@ -271,17 +271,15 @@ public class HttpRequestUtils {
 
             response = getHttpClient().execute(request);
 
-            String responseStr = EntityUtils.toString(response.getEntity());
-
             LOGGER.info("requestUrl:{}|cost:{}", request.getURI().getPath()
-                    , System.currentTimeMillis() - start, responseStr);
+                    , System.currentTimeMillis() - start);
 
             if (response.getEntity().getContentType().getValue().contains("text/html")) {
 
                 throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
             }
 
-            return responseStr;
+            return EntityUtils.toString(response.getEntity());
 
         } catch (ConnectionPoolTimeoutException e) {
 
