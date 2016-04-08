@@ -38,21 +38,21 @@ public class ControllerInterceptor implements MethodInterceptor {
 
             result = invocation.proceed();
 
-        } catch (ServiceException e) {
+            LOGGER.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime));
 
-            LOGGER.info("serviceException|" + methodName + "|code:" + e.getCode() + "|msg:" + e.getMessage());
+        } catch (ServiceException e) {
 
             result = invocation.getMethod().getReturnType().getConstructor(int.class).newInstance(e.getCode());
 
-        } catch (Exception e) {
+            LOGGER.info("serviceException|" + methodName + "|code:" + e.getCode() + "|msg:" + e.getMessage());
 
-            LOGGER.error("otherException|" + methodName + "|msg:" + e.getMessage(), e);
+        } catch (Exception e) {
 
             result = invocation.getMethod().getReturnType().getConstructor(ResponseCodeEnums.class)
                     .newInstance(ResponseCodeEnums.RUNTIME_ERROR);
-        }
 
-        LOGGER.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime));
+            LOGGER.error("otherException|" + methodName + "|msg:" + e.getMessage(), e);
+        }
 
         return result;
     }
