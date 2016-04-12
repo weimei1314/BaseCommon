@@ -19,6 +19,9 @@ public class PageRequest {
     //每页数量
     private int limit = BaseConstants.INT_NULL_VALUE;
 
+    //sql偏移量
+    private int offset = BaseConstants.INT_NULL_VALUE;
+
     public int getCurrent() {
         return current;
     }
@@ -33,6 +36,14 @@ public class PageRequest {
 
     public void setLimit(int limit) {
         this.limit = Math.min(limit, LIMIT_MAX);
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     @Override
