@@ -25,7 +25,7 @@ public class PageListResponse<T> extends BaseResponse {
         super(enums);
     }
 
-    public PageListResponse(ResponseCodeEnums enums, List<T> body, long count) {
+    public PageListResponse(ResponseCodeEnums enums, List<T> body, Long count) {
         super(enums);
         this.body = body;
         this.count = count;
