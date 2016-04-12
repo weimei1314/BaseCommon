@@ -20,7 +20,7 @@ public class PageRequest {
     private int limit = BaseConstants.INT_NULL_VALUE;
 
     //sql偏移量
-    private int offset = BaseConstants.INT_NULL_VALUE;
+    private Integer offset;
 
     public int getCurrent() {
         return current;
@@ -38,11 +38,11 @@ public class PageRequest {
         this.limit = Math.min(limit, LIMIT_MAX);
     }
 
-    public int getOffset() {
+    public Integer getOffset() {
         return offset;
     }
 
-    public void setOffset(int offset) {
+    public void setOffset(Integer offset) {
         this.offset = offset;
     }
 
