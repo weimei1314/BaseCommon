@@ -280,9 +280,16 @@ public class HttpRequestUtils {
             LOGGER.info("requestUrl:{}|cost:{}", request.getURI().getPath()
                     , System.currentTimeMillis() - start);
 
+            if (response.getEntity().getContentType().getValue() == null) {
+
+                throw new ServiceException(ResponseCodeEnums.HTTP_RESPONSE_ERROR);
+            }
+
             if (response.getEntity().getContentType().getValue().contains("text/html")) {
 
-                throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
+                LOGGER.error(EntityUtils.toString(response.getEntity()));
+
+                throw new ServiceException(ResponseCodeEnums.HTTP_RESPONSE_ERROR);
             }
 
             return EntityUtils.toString(response.getEntity());

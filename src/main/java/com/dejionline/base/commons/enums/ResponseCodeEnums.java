@@ -21,6 +21,8 @@ public enum ResponseCodeEnums {
 
     CACHE_ERROR(-23, "更新缓存失败"),
 
+    HTTP_RESPONSE_ERROR(-201, "http请求返回结果错误"),
+
     OTHER_SERVICE_ERROR(-202, "调用其它服务接口异常"),
 
     OTHER_SERVICE_TIMEOUT(-203, "调用其它服务接口超时"),
