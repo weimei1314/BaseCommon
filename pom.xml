@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>base-common</name>
-    <description>base for order and pay</description>
+    <description>base for Sandy`s project</description>
 
     <properties>
         <spring.version>4.2.3.RELEASE</spring.version>
