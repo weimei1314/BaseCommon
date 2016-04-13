@@ -9,6 +9,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -280,14 +281,9 @@ public class HttpRequestUtils {
             LOGGER.info("requestUrl:{}|cost:{}", request.getURI().getPath()
                     , System.currentTimeMillis() - start);
 
-            if (response.getEntity().getContentType().getValue() == null) {
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 
-                throw new ServiceException(ResponseCodeEnums.HTTP_RESPONSE_ERROR);
-            }
-
-            if (response.getEntity().getContentType().getValue().contains("text/html")) {
-
-                LOGGER.error(EntityUtils.toString(response.getEntity()));
+                LOGGER.error("http response status code : " + response.getStatusLine().getStatusCode());
 
                 throw new ServiceException(ResponseCodeEnums.HTTP_RESPONSE_ERROR);
             }
