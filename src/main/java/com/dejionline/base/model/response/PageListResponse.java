@@ -3,6 +3,7 @@ package com.dejionline.base.model.response;
 
 import com.dejionline.base.commons.enums.ResponseCodeEnums;
 import com.dejionline.base.commons.utils.GsonUtils;
+import com.dejionline.base.model.page.PageInfo;
 
 import java.util.List;
 
@@ -25,10 +26,21 @@ public class PageListResponse<T> extends BaseResponse {
         super(enums);
     }
 
+    public PageListResponse(ResponseCodeEnums enums, List<T> body) {
+        super(enums);
+        this.body = body;
+    }
+
     public PageListResponse(ResponseCodeEnums enums, List<T> body, Long count) {
         super(enums);
         this.body = body;
         this.count = count;
+    }
+
+    public PageListResponse(ResponseCodeEnums enums, PageInfo<T> pageInfo) {
+        super(enums);
+        this.body = pageInfo.getBody();
+        this.count = pageInfo.getCount();
     }
 
     public Long getCount() {
