@@ -1,11 +1,7 @@
 package com.dejionline.base.commons.utils;
 
-import com.dejionline.base.exception.ServiceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.Properties;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 /**
  * 环境动态配置工具类
@@ -14,41 +10,19 @@ import java.util.Properties;
  */
 public class ConfigUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigUtils.class);
-
-    private static Properties p = null;
-
-    private static final String CONFIG_PROPERTIES_FILE_NAME = "config.properties";
+    private static Config conf;
 
     // 工具类不允许实例化
     private ConfigUtils() {
     }
 
-    // 获取配置文件
-    public static Properties getProperties() {
+    public static String getProperty(String configKey) {
 
-        if (p == null) {
+        if (conf == null) {
 
-            p = new Properties();
-
-            try {
-
-                p.load(ConfigUtils.class.getClassLoader().getResourceAsStream(CONFIG_PROPERTIES_FILE_NAME));
-
-            } catch (IOException e) {
-
-                LOGGER.error("load config properties failed", e);
-
-                throw new ServiceException(e.getMessage());
-            }
+            conf = ConfigFactory.load();
         }
 
-        return p;
+        return conf.getString(configKey);
     }
-
-    //根据key获取配置文件中的值
-    public static String getProperty(String key) {
-        return getProperties().getProperty(key);
-    }
-
 }
