@@ -2,8 +2,8 @@ package com.dejionline.base.model.response;
 
 
 import com.dejionline.base.commons.enums.ResponseCodeEnums;
-import com.dejionline.base.commons.utils.GsonUtils;
 import com.dejionline.base.model.page.PageInfo;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -14,8 +14,10 @@ import java.util.List;
  */
 public class PageListResponse<T> extends BaseResponse {
 
+    @Getter
     private Long count;
 
+    @Getter
     private List<T> body;
 
     public PageListResponse(int code) {
@@ -41,18 +43,5 @@ public class PageListResponse<T> extends BaseResponse {
         super(enums);
         this.body = pageInfo.getBody();
         this.count = pageInfo.getCount();
-    }
-
-    public Long getCount() {
-        return count;
-    }
-
-    public List<T> getBody() {
-        return body;
-    }
-
-    @Override
-    public String toString() {
-        return GsonUtils.toJson(this);
     }
 }

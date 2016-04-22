@@ -2,7 +2,7 @@ package com.dejionline.base.model.response;
 
 
 import com.dejionline.base.commons.enums.ResponseCodeEnums;
-import com.dejionline.base.commons.utils.GsonUtils;
+import lombok.Getter;
 
 /**
  * 带对象的接口返回对象
@@ -11,6 +11,7 @@ import com.dejionline.base.commons.utils.GsonUtils;
  */
 public class GenericResponse<T> extends BaseResponse {
 
+    @Getter
     private T body;
 
     public GenericResponse(int code) {
@@ -24,14 +25,5 @@ public class GenericResponse<T> extends BaseResponse {
     public GenericResponse(ResponseCodeEnums enums, T body) {
         super(enums);
         this.body = body;
-    }
-
-    public T getBody() {
-        return body;
-    }
-
-    @Override
-    public String toString() {
-        return GsonUtils.toJson(this);
     }
 }

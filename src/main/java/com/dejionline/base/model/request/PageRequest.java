@@ -2,13 +2,14 @@ package com.dejionline.base.model.request;
 
 
 import com.dejionline.base.commons.constants.BaseConstants;
-import com.dejionline.base.commons.utils.GsonUtils;
+import lombok.Data;
 
 /**
  * functional description
  * Created by ShengyangKong
  * on 2016/1/27.
  */
+@Data
 public class PageRequest {
 
     private static final int LIMIT_MAX = 100;
@@ -21,33 +22,4 @@ public class PageRequest {
 
     //sql偏移量
     private Integer offset;
-
-    public int getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(int current) {
-        this.current = current;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = Math.min(limit, LIMIT_MAX);
-    }
-
-    public Integer getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Integer offset) {
-        this.offset = offset;
-    }
-
-    @Override
-    public String toString() {
-        return GsonUtils.toJson(this);
-    }
 }

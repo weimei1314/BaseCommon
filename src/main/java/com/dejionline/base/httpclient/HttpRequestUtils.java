@@ -8,6 +8,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
@@ -20,8 +21,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -37,9 +36,8 @@ import java.util.concurrent.TimeUnit;
  * Created by ShengyangKong
  * on 2016/2/1.
  */
+@Slf4j
 public class HttpRequestUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequestUtils.class);
 
     private static PoolingHttpClientConnectionManager cm;
 
@@ -200,7 +198,7 @@ public class HttpRequestUtils {
 
         } catch (ExecutionException e) {
 
-            LOGGER.warn(e.getMessage());
+            log.warn(e.getMessage());
         }
 
         if (!StringUtils.equals(getHost, uri.getHost())) {
@@ -212,7 +210,7 @@ public class HttpRequestUtils {
 
             } catch (URISyntaxException e) {
 
-                LOGGER.error("get dns host error", e);
+                log.error("get dns host error", e);
 
                 throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
             }
@@ -274,16 +272,16 @@ public class HttpRequestUtils {
 
             long start = System.currentTimeMillis();
 
-            LOGGER.info("requestUrl:{}", request.getURI().getPath());
+            log.info("requestUrl:{}", request.getURI().getPath());
 
             response = getHttpClient().execute(request);
 
-            LOGGER.info("requestUrl:{}|cost:{}", request.getURI().getPath()
+            log.info("requestUrl:{}|cost:{}", request.getURI().getPath()
                     , System.currentTimeMillis() - start);
 
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 
-                LOGGER.error("http response status code : " + response.getStatusLine().getStatusCode());
+                log.error("http response status code : " + response.getStatusLine().getStatusCode());
 
                 throw new ServiceException(ResponseCodeEnums.HTTP_RESPONSE_ERROR);
             }
@@ -312,7 +310,7 @@ public class HttpRequestUtils {
 
                 } catch (IOException e) {
 
-                    LOGGER.error("close http response error");
+                    log.error("close http response error");
                 }
             }
         }

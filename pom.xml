@@ -6,7 +6,7 @@
 
     <groupId>com.dejionline.commons</groupId>
     <artifactId>base-common</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>jar</packaging>
 
     <name>base-common</name>
@@ -92,6 +92,11 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
             <version>1.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.6</version>
         </dependency>
     </dependencies>
 </project>
