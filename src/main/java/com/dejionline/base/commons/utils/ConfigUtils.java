@@ -16,13 +16,13 @@ public class ConfigUtils {
     private ConfigUtils() {
     }
 
-    public static String getProperty(String configKey) {
+    public static Config conf() {
 
         if (conf == null) {
 
             conf = ConfigFactory.load();
         }
 
-        return conf.getString(configKey);
+        return conf;
     }
 }
