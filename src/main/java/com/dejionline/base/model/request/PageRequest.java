@@ -22,4 +22,8 @@ public class PageRequest {
 
     //sql偏移量
     private Integer offset;
+
+    public void setLimit(int limit) {
+        this.limit = Math.min(LIMIT_MAX, limit);
+    }
 }
