@@ -13,6 +13,11 @@ public class ServiceException extends RuntimeException {
     @Getter
     private int code;
 
+    public ServiceException(int code) {
+        super();
+        this.code = code;
+    }
+
     public ServiceException(int code, String msg) {
         super(msg);
         this.code = code;
