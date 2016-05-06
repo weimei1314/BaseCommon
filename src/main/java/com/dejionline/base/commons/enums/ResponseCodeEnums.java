@@ -63,7 +63,9 @@ public enum ResponseCodeEnums {
 
     LOCK_TIME_OUT_AND_AUTO_RELEASE(206, "分布式锁内业务执行超时，自动释放"),
 
-    PAY_EXPRIE(207,"订单支付过期时间已到，请重新下单");
+    PAY_EXPRIE(207, "订单支付过期时间已到，请重新下单"),
+
+    ORDER_ITEM_IS_COMMENTED(208, "该订单商品已评论");
 
     // 接口返回编码
     private int code;
