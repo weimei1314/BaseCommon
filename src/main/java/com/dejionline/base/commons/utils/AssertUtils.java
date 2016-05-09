@@ -44,6 +44,14 @@ public class AssertUtils {
         }
     }
 
+    public static void isTrue(boolean flag, int code) {
+
+        if (!flag) {
+
+            throw new ServiceException(code);
+        }
+    }
+
     public static void isNotEmpty(Collection<?> collection, ResponseCodeEnums enums) {
 
         if (CollectionUtils.isEmpty(collection)) {
