@@ -276,9 +276,6 @@ public class HttpRequestUtils {
 
             response = getHttpClient().execute(request);
 
-            log.info("requestUrl:{}|cost:{}", request.getURI().getPath()
-                    , System.currentTimeMillis() - start);
-
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 
                 log.error("http response status code : " + response.getStatusLine().getStatusCode());
@@ -286,7 +283,12 @@ public class HttpRequestUtils {
                 throw new ServiceException(ResponseCodeEnums.HTTP_RESPONSE_ERROR);
             }
 
-            return EntityUtils.toString(response.getEntity());
+            String resStr = EntityUtils.toString(response.getEntity());
+
+            log.info("requestUrl:{}|cost:{}|response:{}", request.getURI().getPath()
+                    , System.currentTimeMillis() - start, resStr);
+
+            return resStr;
 
         } catch (ConnectionPoolTimeoutException e) {
 
