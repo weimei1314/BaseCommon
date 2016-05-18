@@ -1,7 +1,6 @@
 package com.dejionline.base.model.request;
 
 
-import com.dejionline.base.commons.constants.BaseConstants;
 import lombok.Data;
 
 /**
@@ -14,16 +13,22 @@ public class PageRequest {
 
     private static final int LIMIT_MAX = 100;
 
+    private static final int MIN = 0;
+
     //当前页码
-    private int current = BaseConstants.INT_NULL_VALUE;
+    private int current;
 
     //每页数量
-    private int limit = BaseConstants.INT_NULL_VALUE;
+    private int limit;
 
     //sql偏移量
     private Integer offset;
 
     public void setLimit(int limit) {
-        this.limit = Math.min(LIMIT_MAX, limit);
+        this.limit = Math.max(MIN, Math.min(LIMIT_MAX, limit));
+    }
+
+    public void setCurrent(int current) {
+        this.current = Math.max(MIN, current);
     }
 }
