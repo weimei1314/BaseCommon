@@ -3,7 +3,6 @@ package com.dejionline.base.interceptor;
 
 import com.dejionline.base.annotation.DataSource;
 import com.dejionline.base.commons.enums.ResponseCodeEnums;
-import com.dejionline.base.commons.utils.GsonUtils;
 import com.dejionline.base.datasources.DynamicDataSourceHolder;
 import com.dejionline.base.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +34,7 @@ public class ControllerInterceptor implements MethodInterceptor {
 
         String methodName = invocation.getThis().getClass().getSimpleName() + "." + method.getName();
 
-        log.info("request|" + methodName + "|params:" + GsonUtils.toJson(invocation.getArguments()));
-
+        log.info("request|" + methodName);
 
         try {
 
@@ -49,21 +47,20 @@ public class ControllerInterceptor implements MethodInterceptor {
 
             result = invocation.proceed();
 
-            log.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime)
-                    + "|results:" + GsonUtils.toJson(result));
+            log.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime));
 
         } catch (ServiceException e) {
 
             result = invocation.getMethod().getReturnType().getConstructor(int.class).newInstance(e.getCode());
 
-            log.info("serviceException|" + methodName + "|code:" + e.getCode() + "|msg:" + e.getMessage());
+            log.info("serviceException|" + methodName + "|code:" + e.getCode());
 
         } catch (Exception e) {
 
             result = invocation.getMethod().getReturnType().getConstructor(ResponseCodeEnums.class)
                     .newInstance(ResponseCodeEnums.RUNTIME_ERROR);
 
-            log.error("otherException|" + methodName + "|msg:" + e.getMessage(), e);
+            log.error("otherException|" + methodName, e);
         }
 
         return result;

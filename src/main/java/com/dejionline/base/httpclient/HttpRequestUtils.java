@@ -285,8 +285,8 @@ public class HttpRequestUtils {
 
             String resStr = EntityUtils.toString(response.getEntity());
 
-            log.info("requestUrl:{}|cost:{}|response:{}", request.getURI().getPath()
-                    , System.currentTimeMillis() - start, resStr);
+            log.info("requestUrl:{}|cost:{}", request.getURI().getPath()
+                    , System.currentTimeMillis() - start);
 
             return resStr;
 
