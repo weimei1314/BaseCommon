@@ -22,6 +22,8 @@ import java.util.UUID;
 @Slf4j
 public class ControllerInterceptor implements MethodInterceptor {
 
+    private static final int LOG_LENGTH = 350;
+
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
 
@@ -38,7 +40,7 @@ public class ControllerInterceptor implements MethodInterceptor {
         String params = GsonUtils.toJson(invocation.getArguments());
 
         log.info("request|" + methodName + "|params:" +
-                (params.length() > 50 ? params.substring(0, 51) : params));
+                (params.length() > LOG_LENGTH ? params.substring(0, LOG_LENGTH) : params));
 
         try {
 
@@ -54,7 +56,7 @@ public class ControllerInterceptor implements MethodInterceptor {
             String resultStr = GsonUtils.toJson(result);
 
             log.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime)
-                    + "|response:{}", resultStr.length() > 50 ? resultStr.substring(0, 51) : resultStr);
+                    + "|response:{}", resultStr.length() > LOG_LENGTH ? resultStr.substring(0, LOG_LENGTH) : resultStr);
 
         } catch (ServiceException e) {
 
