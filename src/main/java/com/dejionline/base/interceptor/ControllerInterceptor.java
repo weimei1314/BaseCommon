@@ -3,6 +3,7 @@ package com.dejionline.base.interceptor;
 
 import com.dejionline.base.annotation.DataSource;
 import com.dejionline.base.commons.enums.ResponseCodeEnums;
+import com.dejionline.base.commons.utils.GsonUtils;
 import com.dejionline.base.datasources.DynamicDataSourceHolder;
 import com.dejionline.base.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,10 @@ public class ControllerInterceptor implements MethodInterceptor {
 
         String methodName = invocation.getThis().getClass().getSimpleName() + "." + method.getName();
 
-        log.info("request|" + methodName);
+        String params = GsonUtils.toJson(invocation.getArguments());
+
+        log.info("request|" + methodName + "|params:" +
+                (params.length() > 50 ? params.substring(0, 51) : params));
 
         try {
 
@@ -47,7 +51,10 @@ public class ControllerInterceptor implements MethodInterceptor {
 
             result = invocation.proceed();
 
-            log.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime));
+            String resultStr = GsonUtils.toJson(result);
+
+            log.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime)
+                    + "|response:{}", resultStr.length() > 50 ? resultStr.substring(0, 51) : resultStr);
 
         } catch (ServiceException e) {
 
