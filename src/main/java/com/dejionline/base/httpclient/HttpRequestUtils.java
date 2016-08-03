@@ -142,6 +142,28 @@ public class HttpRequestUtils {
     }
 
     /**
+     * get请求附带额外请求头
+     *
+     * @param url
+     * @param timeout
+     * @param resObjType
+     * @param headerKey
+     * @param headerValue
+     * @param <T>
+     * @return
+     * @throws ServiceException
+     */
+    public static <T> T getRequestWithHeaders(String url, int timeout, Type resObjType
+            , String headerKey, String headerValue) throws ServiceException {
+
+        HttpGet httpGet = new HttpGet(url);
+
+        httpGet.addHeader(headerKey, headerValue);
+
+        return baseRequest(httpGet, timeout, resObjType);
+    }
+
+    /**
      * put请求
      *
      * @param url
@@ -215,7 +237,7 @@ public class HttpRequestUtils {
                 throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
             }
 
-            request.setHeader("host", uri.getHost());
+            request.addHeader("host", uri.getHost());
         }
 
         request.setConfig(RequestConfig.custom()
