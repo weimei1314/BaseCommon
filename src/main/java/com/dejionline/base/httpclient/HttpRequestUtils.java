@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.apache.http.entity.ContentType;
@@ -167,6 +164,58 @@ public class HttpRequestUtils {
         return getRequest(url, DEFAULT_TIME_OUT, classOfT);
     }
 
+    /**
+     * del请求
+     *
+     * @param url
+     * @param timeout
+     * @param resObjType
+     * @param <T>
+     * @return
+     * @throws IOException
+     */
+    public static <T> T deleteRequest(String url, int timeout, Type resObjType) {
+        return baseRequest(new HttpDelete(url), timeout, resObjType);
+    }
+
+    public static <T> T deleteRequest(String url, Type resObjType) {
+        return deleteRequest(url, DEFAULT_TIME_OUT, resObjType);
+    }
+
+    public static <T> T deleteRequest(String url, int timeout, Class<T> classOfT) {
+        return baseRequest(new HttpDelete(url), timeout, classOfT);
+    }
+
+    public static <T> T deleteRequest(String url, Class<T> classOfT) {
+        return deleteRequest(url, DEFAULT_TIME_OUT, classOfT);
+    }
+
+    /**
+     * put请求
+     *
+     * @param url
+     * @param timeout
+     * @param resObjType
+     * @param <T>
+     * @return
+     * @throws IOException
+     */
+    public static <T> T putRequest(String url, int timeout, Type resObjType) {
+        return baseRequest(new HttpPut(url), timeout, resObjType);
+    }
+
+    public static <T> T putRequest(String url, Type resObjType) {
+        return putRequest(url, DEFAULT_TIME_OUT, resObjType);
+    }
+
+    public static <T> T putRequest(String url, int timeout, Class<T> classOfT) {
+        return baseRequest(new HttpPut(url), timeout, classOfT);
+    }
+
+    public static <T> T putRequest(String url, Class<T> classOfT) {
+        return putRequest(url, DEFAULT_TIME_OUT, classOfT);
+    }
+
 
     /**
      * 基本请求
@@ -226,14 +275,6 @@ public class HttpRequestUtils {
 
     public static String baseRequest(HttpRequestBase request) {
         return baseRequest(request, DEFAULT_TIME_OUT);
-    }
-
-    public static <T> T baseRequest(HttpRequestBase request, Type resObjType) {
-        return GsonUtils.fromJson(baseRequest(request, DEFAULT_TIME_OUT), resObjType);
-    }
-
-    public static <T> T baseRequest(HttpRequestBase request, Class<T> classOfT) {
-        return GsonUtils.fromJson(baseRequest(request, DEFAULT_TIME_OUT), classOfT);
     }
 
     /**
