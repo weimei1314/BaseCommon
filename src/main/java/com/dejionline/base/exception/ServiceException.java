@@ -1,6 +1,5 @@
 package com.dejionline.base.exception;
 
-import com.dejionline.base.commons.enums.ResponseCodeEnums;
 import lombok.Getter;
 
 /**
@@ -21,11 +20,6 @@ public class ServiceException extends RuntimeException {
     public ServiceException(int code, String msg) {
         super(msg);
         this.code = code;
-    }
-
-    public ServiceException(ResponseCodeEnums enums) {
-        super(enums.getMessage());
-        this.code = enums.getCode();
     }
 
     // 重写错误堆栈方法，减少性能损耗

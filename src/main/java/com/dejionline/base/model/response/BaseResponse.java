@@ -1,6 +1,5 @@
 package com.dejionline.base.model.response;
 
-import com.dejionline.base.commons.enums.ResponseCodeEnums;
 import lombok.Data;
 
 /**
@@ -16,9 +15,5 @@ public class BaseResponse {
 
     public BaseResponse(int code) {
         this.code = code;
-    }
-
-    public BaseResponse(ResponseCodeEnums enums) {
-        this.code = enums.getCode();
     }
 }

@@ -1,7 +1,6 @@
 package com.dejionline.base.model.response;
 
 
-import com.dejionline.base.commons.enums.ResponseCodeEnums;
 import lombok.Getter;
 
 /**
@@ -18,12 +17,8 @@ public class GenericResponse<T> extends BaseResponse {
         super(code);
     }
 
-    public GenericResponse(ResponseCodeEnums enums) {
-        super(enums);
-    }
-
-    public GenericResponse(ResponseCodeEnums enums, T body) {
-        super(enums);
+    public GenericResponse(int code, T body) {
+        super(code);
         this.body = body;
     }
 }

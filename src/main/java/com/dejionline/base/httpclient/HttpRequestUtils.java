@@ -1,7 +1,6 @@
 package com.dejionline.base.httpclient;
 
-import com.dejionline.base.commons.constants.HttpRequestConstants;
-import com.dejionline.base.commons.enums.ResponseCodeEnums;
+import com.dejionline.base.commons.constants.ResponseCodeConstants;
 import com.dejionline.base.commons.utils.GsonUtils;
 import com.dejionline.base.exception.ServiceException;
 import com.google.common.cache.CacheBuilder;
@@ -12,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.apache.http.entity.ContentType;
@@ -39,11 +41,27 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class HttpRequestUtils {
 
+    private static final String DNS_SERVICE_URL_INDEX = "http://httpdns.djdev.com/d?dn=";
+
+    private static final int DNS_SERVICE_TIMEOUT = 2000;
+
+    private static final int DNS_HOST_CACHE_EXPIRY_SECONDS = 30;
+
+    private static final int HTTP_CLIENT_CONNECTION_POOL_MAX = 1024;
+
+    private static final int HTTP_CLIENT_CONNECTION_PER_ROUTE_MAX = 512;
+
+    private static final int GET_CONNECT_TIME_OUT = 1000;
+
+    private static final int CONNECT_TIME_OUT = 1000;
+
+    private static final int DEFAULT_TIME_OUT = 3000;
+
     private static PoolingHttpClientConnectionManager cm;
 
     private static LoadingCache<String, String> hostCache = CacheBuilder.newBuilder()
             //设置写缓存后30秒钟过期
-            .expireAfterWrite(HttpRequestConstants.DNS_HOST_CACHE_EXPIRY_SECONDS, TimeUnit.SECONDS)
+            .expireAfterWrite(DNS_HOST_CACHE_EXPIRY_SECONDS, TimeUnit.SECONDS)
             //build方法中可以指定CacheLoader，在缓存不存在时通过CacheLoader的实现自动加载缓存
             .build(
                     new CacheLoader<String, String>() {
@@ -66,10 +84,10 @@ public class HttpRequestUtils {
             cm = new PoolingHttpClientConnectionManager();
 
             //整个连接池最大连接数
-            cm.setMaxTotal(HttpRequestConstants.HTTP_CLIENT_CONNECTION_POOL_MAX);
+            cm.setMaxTotal(HTTP_CLIENT_CONNECTION_POOL_MAX);
 
             //每路由最大连接数，默认值是2
-            cm.setDefaultMaxPerRoute(HttpRequestConstants.HTTP_CLIENT_CONNECTION_PER_ROUTE_MAX);
+            cm.setDefaultMaxPerRoute(HTTP_CLIENT_CONNECTION_PER_ROUTE_MAX);
         }
     }
 
@@ -97,7 +115,7 @@ public class HttpRequestUtils {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public static <T> T postRequest(String url, int timeout, Object paramObj, Type resObjType) throws ServiceException {
+    public static <T> T postRequest(String url, int timeout, Object paramObj, Type resObjType) {
 
         HttpPost httpPost = new HttpPost(url);
 
@@ -106,24 +124,21 @@ public class HttpRequestUtils {
         return baseRequest(httpPost, timeout, resObjType);
     }
 
-    /**
-     * 基本post请求
-     *
-     * @param url
-     * @param timeout
-     * @param param
-     * @return
-     * @throws ServiceException
-     */
-    public static String postRequestWithoutDns(String url, int timeout, String param, ContentType contentType) throws ServiceException {
+    public static <T> T postRequest(String url, int timeout, Object paramObj, Class<T> classOfT) {
 
         HttpPost httpPost = new HttpPost(url);
 
-        httpPost.setEntity(new StringEntity(param, contentType));
+        httpPost.setEntity(new StringEntity(GsonUtils.toJson(paramObj), ContentType.APPLICATION_JSON));
 
-        httpPost.setConfig(RequestConfig.custom().setSocketTimeout(timeout).build());
+        return baseRequest(httpPost, timeout, classOfT);
+    }
 
-        return executeHttp(httpPost);
+    public static <T> T postRequest(String url, Object paramObj, Type resObjType) {
+        return postRequest(url, DEFAULT_TIME_OUT, paramObj, resObjType);
+    }
+
+    public static <T> T postRequest(String url, Object paramObj, Class<T> classOfT) {
+        return postRequest(url, DEFAULT_TIME_OUT, paramObj, classOfT);
     }
 
     /**
@@ -136,79 +151,32 @@ public class HttpRequestUtils {
      * @return
      * @throws IOException
      */
-    public static <T> T getRequest(String url, int timeout, Type resObjType) throws ServiceException {
-
+    public static <T> T getRequest(String url, int timeout, Type resObjType) {
         return baseRequest(new HttpGet(url), timeout, resObjType);
     }
 
-    /**
-     * get请求附带额外请求头
-     *
-     * @param url
-     * @param timeout
-     * @param resObjType
-     * @param headerKey
-     * @param headerValue
-     * @param <T>
-     * @return
-     * @throws ServiceException
-     */
-    public static <T> T getRequestWithHeaders(String url, int timeout, Type resObjType
-            , String headerKey, String headerValue) throws ServiceException {
-
-        HttpGet httpGet = new HttpGet(url);
-
-        httpGet.addHeader(headerKey, headerValue);
-
-        return baseRequest(httpGet, timeout, resObjType);
+    public static <T> T getRequest(String url, Type resObjType) {
+        return getRequest(url, DEFAULT_TIME_OUT, resObjType);
     }
 
-    /**
-     * put请求
-     *
-     * @param url
-     * @param timeout
-     * @param resObjType
-     * @param <T>
-     * @return
-     * @throws IOException
-     */
-    public static <T> T putRequest(String url, int timeout, Object paramObj, Type resObjType) throws ServiceException {
-
-        HttpPut httpPut = new HttpPut(url);
-
-        httpPut.setEntity(new StringEntity(GsonUtils.toJson(paramObj), ContentType.APPLICATION_JSON));
-
-        return baseRequest(httpPut, timeout, resObjType);
+    public static <T> T getRequest(String url, int timeout, Class<T> classOfT) {
+        return baseRequest(new HttpGet(url), timeout, classOfT);
     }
 
-    /**
-     * delete请求
-     *
-     * @param url
-     * @param timeout
-     * @param resObjType
-     * @param <T>
-     * @return
-     * @throws IOException
-     */
-    public static <T> T deleteRequest(String url, int timeout, Type resObjType) throws ServiceException {
-
-        return baseRequest(new HttpDelete(url), timeout, resObjType);
+    public static <T> T getRequest(String url, Class<T> classOfT) {
+        return getRequest(url, DEFAULT_TIME_OUT, classOfT);
     }
 
+
     /**
-     * http通用请求
+     * 基本请求
      *
      * @param request
      * @param timeout
-     * @param resObjType
-     * @param <T>
      * @return
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws ServiceException
      */
-    private static <T> T baseRequest(HttpRequestBase request, int timeout, Type resObjType) throws ServiceException {
+    public static String baseRequest(HttpRequestBase request, int timeout) {
 
         URI uri = request.getURI();
 
@@ -234,18 +202,38 @@ public class HttpRequestUtils {
 
                 log.error("get dns host error", e);
 
-                throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
+                throw new ServiceException(ResponseCodeConstants.OTHER_SERVICE_ERROR);
             }
 
             request.addHeader("host", uri.getHost());
         }
 
         request.setConfig(RequestConfig.custom()
-                .setConnectionRequestTimeout(HttpRequestConstants.GET_CONNECT_TIME_OUT)
-                .setConnectTimeout(HttpRequestConstants.CONNECT_TIME_OUT)
+                .setConnectionRequestTimeout(GET_CONNECT_TIME_OUT)
+                .setConnectTimeout(CONNECT_TIME_OUT)
                 .setSocketTimeout(timeout).build());
 
-        return GsonUtils.fromJson(executeHttp(request), resObjType);
+        return executeHttp(request);
+    }
+
+    public static <T> T baseRequest(HttpRequestBase request, int timeout, Type resObjType) {
+        return GsonUtils.fromJson(baseRequest(request, timeout), resObjType);
+    }
+
+    public static <T> T baseRequest(HttpRequestBase request, int timeout, Class<T> classOfT) {
+        return GsonUtils.fromJson(baseRequest(request, timeout), classOfT);
+    }
+
+    public static String baseRequest(HttpRequestBase request) {
+        return baseRequest(request, DEFAULT_TIME_OUT);
+    }
+
+    public static <T> T baseRequest(HttpRequestBase request, Type resObjType) {
+        return GsonUtils.fromJson(baseRequest(request, DEFAULT_TIME_OUT), resObjType);
+    }
+
+    public static <T> T baseRequest(HttpRequestBase request, Class<T> classOfT) {
+        return GsonUtils.fromJson(baseRequest(request, DEFAULT_TIME_OUT), classOfT);
     }
 
     /**
@@ -256,12 +244,12 @@ public class HttpRequestUtils {
      */
     private static String getDnsHost(String host) {
 
-        HttpGet httpGet = new HttpGet(HttpRequestConstants.DNS_SERVICE_URL_INDEX + host);
+        HttpGet httpGet = new HttpGet(DNS_SERVICE_URL_INDEX + host);
 
         httpGet.setConfig(RequestConfig.custom()
-                .setConnectionRequestTimeout(HttpRequestConstants.GET_CONNECT_TIME_OUT)
-                .setConnectTimeout(HttpRequestConstants.CONNECT_TIME_OUT)
-                .setSocketTimeout(HttpRequestConstants.DNS_SERVICE_TIMEOUT)
+                .setConnectionRequestTimeout(GET_CONNECT_TIME_OUT)
+                .setConnectTimeout(CONNECT_TIME_OUT)
+                .setSocketTimeout(DNS_SERVICE_TIMEOUT)
                 .build());
 
         List<String> hostList;
@@ -286,7 +274,7 @@ public class HttpRequestUtils {
      * @return
      * @throws IOException
      */
-    private static String executeHttp(HttpRequestBase request) throws ServiceException {
+    private static String executeHttp(HttpRequestBase request) {
 
         CloseableHttpResponse response = null;
 
@@ -302,7 +290,7 @@ public class HttpRequestUtils {
 
                 log.error("http response status code : " + response.getStatusLine().getStatusCode());
 
-                throw new ServiceException(ResponseCodeEnums.HTTP_RESPONSE_ERROR);
+                throw new ServiceException(ResponseCodeConstants.HTTP_RESPONSE_ERROR);
             }
 
             String resStr = EntityUtils.toString(response.getEntity());
@@ -313,15 +301,15 @@ public class HttpRequestUtils {
 
         } catch (ConnectionPoolTimeoutException e) {
 
-            throw new ServiceException(ResponseCodeEnums.GET_HTTPCLIENT_POOL_TIMEOUT);
+            throw new ServiceException(ResponseCodeConstants.GET_HTTPCLIENT_POOL_TIMEOUT);
 
         } catch (SocketTimeoutException | ConnectTimeoutException e) {
 
-            throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_TIMEOUT);
+            throw new ServiceException(ResponseCodeConstants.OTHER_SERVICE_TIMEOUT);
 
         } catch (IOException e) {
 
-            throw new ServiceException(ResponseCodeEnums.OTHER_SERVICE_ERROR);
+            throw new ServiceException(ResponseCodeConstants.OTHER_SERVICE_ERROR);
 
         } finally {
 

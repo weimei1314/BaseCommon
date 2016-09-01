@@ -2,7 +2,7 @@ package com.dejionline.base.interceptor;
 
 
 import com.dejionline.base.annotation.DataSource;
-import com.dejionline.base.commons.enums.ResponseCodeEnums;
+import com.dejionline.base.commons.constants.ResponseCodeConstants;
 import com.dejionline.base.commons.utils.GsonUtils;
 import com.dejionline.base.datasources.DynamicDataSourceHolder;
 import com.dejionline.base.exception.ServiceException;
@@ -59,8 +59,8 @@ public class ControllerInterceptor implements MethodInterceptor {
 
         } catch (Exception e) {
 
-            result = invocation.getMethod().getReturnType().getConstructor(ResponseCodeEnums.class)
-                    .newInstance(ResponseCodeEnums.RUNTIME_ERROR);
+            result = invocation.getMethod().getReturnType().getConstructor(int.class)
+                    .newInstance(ResponseCodeConstants.RUNTIME_ERROR);
 
             log.error("otherException|" + methodName, e);
         }

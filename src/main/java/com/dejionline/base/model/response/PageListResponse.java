@@ -1,7 +1,6 @@
 package com.dejionline.base.model.response;
 
 
-import com.dejionline.base.commons.enums.ResponseCodeEnums;
 import com.dejionline.base.model.page.PageInfo;
 import lombok.Getter;
 
@@ -24,23 +23,19 @@ public class PageListResponse<T> extends BaseResponse {
         super(code);
     }
 
-    public PageListResponse(ResponseCodeEnums enums) {
-        super(enums);
-    }
-
-    public PageListResponse(ResponseCodeEnums enums, List<T> body) {
-        super(enums);
+    public PageListResponse(int code, List<T> body) {
+        super(code);
         this.body = body;
     }
 
-    public PageListResponse(ResponseCodeEnums enums, List<T> body, Long count) {
-        super(enums);
+    public PageListResponse(int code, List<T> body, Long count) {
+        super(code);
         this.body = body;
         this.count = count;
     }
 
-    public PageListResponse(ResponseCodeEnums enums, PageInfo<T> pageInfo) {
-        super(enums);
+    public PageListResponse(int code, PageInfo<T> pageInfo) {
+        super(code);
         this.body = pageInfo.getBody();
         this.count = pageInfo.getCount();
     }
