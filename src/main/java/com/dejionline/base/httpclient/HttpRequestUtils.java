@@ -56,20 +56,6 @@ public class HttpRequestUtils {
 
     private static PoolingHttpClientConnectionManager cm;
 
-    private static LoadingCache<String, String> hostCache = CacheBuilder.newBuilder()
-            //设置写缓存后30秒钟过期
-            .expireAfterWrite(DNS_HOST_CACHE_EXPIRY_SECONDS, TimeUnit.SECONDS)
-            //build方法中可以指定CacheLoader，在缓存不存在时通过CacheLoader的实现自动加载缓存
-            .build(
-                    new CacheLoader<String, String>() {
-
-                        @Override
-                        public String load(String host) {
-                            return getDnsHost(host);
-                        }
-                    }
-            );
-
     // 工具类不允许实例化
     private HttpRequestUtils() {
     }
@@ -227,36 +213,6 @@ public class HttpRequestUtils {
      */
     public static String baseRequest(HttpRequestBase request, int timeout) {
 
-        URI uri = request.getURI();
-
-        String getHost = uri.getHost();
-
-        try {
-
-            getHost = hostCache.get(uri.getHost());
-
-        } catch (ExecutionException e) {
-
-            log.warn(e.getMessage());
-        }
-
-        if (!StringUtils.equals(getHost, uri.getHost())) {
-
-            try {
-
-                request.setURI(new URI(uri.getScheme(), uri.getUserInfo(), getHost
-                        , uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment()));
-
-            } catch (URISyntaxException e) {
-
-                log.error("get dns host error", e);
-
-                throw new ServiceException(ResponseCodeConstants.OTHER_SERVICE_ERROR);
-            }
-
-            request.addHeader("host", uri.getHost());
-        }
-
         request.setConfig(RequestConfig.custom()
                 .setConnectionRequestTimeout(GET_CONNECT_TIME_OUT)
                 .setConnectTimeout(CONNECT_TIME_OUT)
@@ -275,37 +231,6 @@ public class HttpRequestUtils {
 
     public static String baseRequest(HttpRequestBase request) {
         return baseRequest(request, DEFAULT_TIME_OUT);
-    }
-
-    /**
-     * 通过dns服务获取host地址，如果获取不到采用原有地址
-     *
-     * @param host
-     * @return
-     */
-    private static String getDnsHost(String host) {
-
-        HttpGet httpGet = new HttpGet(DNS_SERVICE_URL_INDEX + host);
-
-        httpGet.setConfig(RequestConfig.custom()
-                .setConnectionRequestTimeout(GET_CONNECT_TIME_OUT)
-                .setConnectTimeout(CONNECT_TIME_OUT)
-                .setSocketTimeout(DNS_SERVICE_TIMEOUT)
-                .build());
-
-        List<String> hostList;
-
-        try {
-
-            hostList = GsonUtils.fromJson(executeHttp(httpGet), new TypeToken<List<String>>() {
-            }.getType());
-
-        } catch (Exception e) {
-
-            return host;
-        }
-
-        return (hostList == null || hostList.size() == 0) ? host : hostList.get(0);
     }
 
     /**

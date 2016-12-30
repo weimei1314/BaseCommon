@@ -16,6 +16,6 @@ base-commons
 
 ###通用日志格式类（待补全功能）
 
-###dns地址解析请求工具（httpclient）
+###http请求工具（httpclient）
 
 ###数据库读写分离注解工具
