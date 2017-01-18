@@ -48,8 +48,7 @@ public class ControllerInterceptor implements MethodInterceptor {
 
             result = invocation.proceed();
 
-            log.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime)
-                    + "|response:" + GsonUtils.toJson(result));
+            log.info("response|" + methodName + "|cost:" + (System.currentTimeMillis() - startTime));
 
         } catch (ServiceException e) {
 
