@@ -60,13 +60,13 @@ public class AssertUtils {
 
     public static void isSuccess(BaseResponse response) {
         if (ResponseCodeConstants.SUCCESS != response.getCode()) {
-            throw new ServiceException(response.getCode());
+            throw new ServiceException(response.getCode(), "response code : " + response.getCode());
         }
     }
 
     public static void isSuccess(BaseResponse response, int code) {
         if (ResponseCodeConstants.SUCCESS != response.getCode()) {
-            throw new ServiceException(code);
+            throw new ServiceException(code, "response code : " + response.getCode());
         }
     }
 }
