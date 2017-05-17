@@ -3,12 +3,7 @@ package com.dejionline.base.httpclient;
 import com.dejionline.base.commons.constants.ResponseCodeConstants;
 import com.dejionline.base.commons.utils.GsonUtils;
 import com.dejionline.base.exception.ServiceException;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
@@ -24,11 +19,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * http访问工具
@@ -37,12 +28,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class HttpRequestUtils {
-
-    private static final String DNS_SERVICE_URL_INDEX = "http://httpdns.djdev.com/d?dn=";
-
-    private static final int DNS_SERVICE_TIMEOUT = 2000;
-
-    private static final int DNS_HOST_CACHE_EXPIRY_SECONDS = 30;
 
     private static final int HTTP_CLIENT_CONNECTION_POOL_MAX = 1024;
 
