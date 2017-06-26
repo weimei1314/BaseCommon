@@ -2,6 +2,7 @@ package com.dejionline.base.commons.utils;
 
 import com.google.gson.Gson;
 
+import java.io.Reader;
 import java.lang.reflect.Type;
 
 /**
@@ -29,4 +30,7 @@ public class GsonUtils {
         return gson.fromJson(json, typeOfT);
     }
 
+    public static <T> T fromJson(Reader reader, Type typeOfT) {
+        return gson.fromJson(reader, typeOfT);
+    }
 }
