@@ -26,6 +26,10 @@ public class GsonUtils {
         return gson.fromJson(json, classOfT);
     }
 
+    public static <T> T fromJson(Reader reader, Class<T> classOfT) {
+        return gson.fromJson(reader, classOfT);
+    }
+
     public static <T> T fromJson(String json, Type typeOfT) {
         return gson.fromJson(json, typeOfT);
     }
