@@ -4,7 +4,6 @@ import com.dejionline.base.commons.constants.ResponseCodeConstants;
 import com.dejionline.base.exception.ServiceException;
 import com.dejionline.base.model.response.BaseResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -41,7 +40,7 @@ public class AssertUtils {
     }
 
     public static void isNotEmpty(Collection<?> collection, int code) {
-        if (CollectionUtils.isEmpty(collection)) {
+        if (collection == null || collection.isEmpty()) {
             throw new ServiceException(code);
         }
     }
@@ -60,13 +59,13 @@ public class AssertUtils {
 
     public static void isSuccess(BaseResponse response) {
         if (ResponseCodeConstants.SUCCESS != response.getCode()) {
-            throw new ServiceException(response.getCode(), "response code : " + response.getCode());
+            throw new ServiceException(response.getCode(), "response code:" + response.getCode());
         }
     }
 
     public static void isSuccess(BaseResponse response, int code) {
         if (ResponseCodeConstants.SUCCESS != response.getCode()) {
-            throw new ServiceException(code, "response code : " + response.getCode());
+            throw new ServiceException(code, "response code:" + response.getCode());
         }
     }
 }

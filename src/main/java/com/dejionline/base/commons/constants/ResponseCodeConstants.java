@@ -43,5 +43,4 @@ public class ResponseCodeConstants {
     //没有权限
     public static final int NO_PERMISSION = 99;
 
-
 }
