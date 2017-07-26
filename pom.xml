@@ -6,11 +6,16 @@
 
     <groupId>com.dejionline.commons</groupId>
     <artifactId>base-common</artifactId>
-    <version>4.0.2</version>
+    <version>4.0.3</version>
     <packaging>jar</packaging>
 
     <name>base-common</name>
     <description>base for xxweimei`s project</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
     <dependencies>
         <dependency>

@@ -10,19 +10,13 @@ import com.typesafe.config.ConfigFactory;
  */
 public class ConfigUtils {
 
-    private static Config conf;
+    private static final Config conf = ConfigFactory.load();
 
     // 工具类不允许实例化
     private ConfigUtils() {
     }
 
-    public static Config conf() {
-
-        if (conf == null) {
-
-            conf = ConfigFactory.load();
-        }
-
+    public static Config getConf() {
         return conf;
     }
 }
